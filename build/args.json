@@ -1,0 +1,13 @@
+{
+	"paths": {
+		"palettes": "../../palpng/data/palettes.json",
+		"output": "../../palpng/docs/dist/img/palettes"
+	},
+
+	"resolutions": [
+		{"name": "HD", "height": 720, "width": 1280},
+		{"name": "FHD", "height": 1080, "width": 1920},
+		{"name": "QHD", "height": 1440, "width": 2560},
+		{"name": "UHD", "height": 2160, "width": 3840}
+	]
+}
