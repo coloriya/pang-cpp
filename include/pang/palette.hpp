@@ -19,6 +19,7 @@ namespace pang {
 
 	class Palette
 	{
+		friend class Row;
 
 		App *app;
 		nj::json json;

@@ -1,6 +1,7 @@
 #include "pang/pngwriter.hpp"
 
 #include "pang/resolution.hpp"
+#include "pang/row.hpp"
 
 
 
@@ -82,6 +83,11 @@ png_bytep pang::PngWriter::getRow (int n)
 void pang::PngWriter::write (png_bytep row)
 {
 	png_write_row(this->png_ptr, row);
+}
+
+void pang::PngWriter::write (Row *row)
+{
+	png_write_row(this->png_ptr, row->row);
 }
 
 void pang::PngWriter::save ()

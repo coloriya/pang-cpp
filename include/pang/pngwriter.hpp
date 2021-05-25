@@ -14,6 +14,7 @@ namespace fs = std::filesystem;
 namespace pang
 {
 	class Resolution;
+	class Row;
 
 	class PngWriter
 	{
@@ -42,6 +43,7 @@ namespace pang
 		png_bytep getRow(int n);
 
 		void write(png_bytep row);
+		void write(Row *row);
 		void save();
 	};
 };

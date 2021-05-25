@@ -4,6 +4,7 @@
 #include "pang/color.hpp"
 #include "pang/resolution.hpp"
 #include "pang/pngwriter.hpp"
+#include "pang/row.hpp"
 
 #include <string>
 
@@ -191,67 +192,40 @@ void pang::Palette::produceSquaresOnWhitePng (Resolution *resolution)
 	if (fs::exists(png_path))
 	{
 		std::cout << "\texists: (" << png_path << ")\n";
-		//return;
+		return;
 	}
 
+	pang::Row row {resolution, this};
+	row.setBackground(255, 255, 255);
+
+	pang::Row white_row {resolution, 255, 255, 255};
 	pang::PngWriter png_writer {resolution, png_path};
+
 	int width = png_writer.getWidth();
 	int height = png_writer.getHeight();
-
-	auto row = png_writer.getRow(2);
-
-	Color white{255, 255, 255};
-	auto white_row = png_writer.getRow();
-	white.colorRow(white_row, width);
 
 	int gap_width = 9;
 	int gap_height = 9;
 
-	int row_width = width * 2;
 	int square_height = (height - gap_height) / 9;
-	int square_width = (width - gap_width) / 16;
-
-	int square_inner_height = square_height - gap_height;
-	int square_inner_width = square_width - gap_width;
-
-	Color *color;
-	for (int x=0; x<row_width; x++)
-	{
-		int offset = x % square_width;
-		if (x % square_width == 0)
-		{
-			int color_index = (x / square_width) % this->colors.size();
-			color = this->colors[color_index];
-		}
-
-		if (offset < gap_width)
-		{
-			row[x*3] = white.getR();
-			row[x*3 + 1] = white.getG();
-			row[x*3 + 2] = white.getB();
-		}
-		else
-		{
-			row[x*3] = color->getR();
-			row[x*3 + 1] = color->getG();
-			row[x*3 + 2] = color->getB();
-		}
-	}
 
 	for (int y = 0; y < height; y++) {
+		int row_index = y / square_height;
 		int offset = y % square_height;
-		if (y > 0 && offset == 0)
+
+		if (offset == 0)
 		{
-			row += square_width * 3;
+			row.setCurrentColor(row_index);
+			row.colorForChessboard(16, gap_width);
 		}
 
 		if (offset < gap_height)
 		{
-			png_writer.write(white_row);
+			png_writer.write(&white_row);
 		}
 		else
 		{
-			png_writer.write(row);
+			png_writer.write(&row);
 		}
 	}
 
