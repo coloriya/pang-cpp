@@ -1,7 +1,7 @@
 {
 	"paths": {
-		"palettes": "../../palpng/data/palettes.json",
-		"output": "../../palpng/docs/dist/img/palettes"
+		"palettes": "../../pang/data/palettes.json",
+		"output": "../../pang/docs/dist/img/palettes"
 	},
 
 	"resolutions": [
