@@ -51,6 +51,7 @@ void pang::Palette::producePngs (Resolution *resolution)
 	this->produceBarsPng(resolution);
 	this->produceSlabsPng(resolution);
 	this->produceSquaresPng(resolution);
+	this->produceSquaresOnBlackPng(resolution);
 	this->produceSquaresOnWhitePng(resolution);
 	return;
 }
@@ -185,6 +186,54 @@ void pang::Palette::produceSquaresPng (Resolution *resolution)
 }
 
 
+
+void pang::Palette::produceSquaresOnBlackPng (Resolution *resolution)
+{
+	auto png_path = this->getPngPath("squares_on_black", resolution);
+	if (fs::exists(png_path))
+	{
+		std::cout << "\texists: (" << png_path << ")\n";
+		return;
+	}
+
+	pang::Row row {resolution, this};
+	row.setBackground(0, 0, 0);
+
+	pang::Row black_row {resolution, 0, 0, 0};
+	pang::PngWriter png_writer {resolution, png_path};
+
+	int width = png_writer.getWidth();
+	int height = png_writer.getHeight();
+
+	int gap_width = 9;
+	int gap_height = 9;
+
+	int square_height = (height - gap_height) / 9;
+
+	for (int y = 0; y < height; y++) {
+		int row_index = y / square_height;
+		int offset = y % square_height;
+
+		if (offset == 0)
+		{
+			row.setCurrentColor(row_index);
+			row.colorForChessboard(16, gap_width);
+		}
+
+		if (offset < gap_height)
+		{
+			png_writer.write(&black_row);
+		}
+		else
+		{
+			png_writer.write(&row);
+		}
+	}
+
+	png_writer.save();
+
+	std::cout << "\tsaved: (" << png_path << ")\n";
+}
 
 void pang::Palette::produceSquaresOnWhitePng (Resolution *resolution)
 {
