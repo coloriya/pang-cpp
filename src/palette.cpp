@@ -38,6 +38,7 @@ fs::path pang::Palette::getPngPath (std::string design_name, Resolution *resolut
 	png_path = fs::path(this->app->args_json["paths"]["output"]);
 
 	png_path.append(resolution->getName());
+	png_path.append(design_name);
 	std::string filename = "pang_";
 	filename += std::to_string(this->index);
 	filename += "_" + design_name + "_" + resolution->getSuffix() + ".png";
